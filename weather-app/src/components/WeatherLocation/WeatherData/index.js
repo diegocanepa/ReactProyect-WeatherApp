@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 import WeatherExtraInfo from './WeatherExtraInfo';
 import WeatherTemperature from './WeatherTemperature'
 import {
@@ -13,15 +14,33 @@ import {
 import './styles.css';
 
 
-const WeatherData = () => (
+const WeatherData = ({data: {temperature, weatherState, humidity, wind}}) => {
+    //descomponemos lo que viene en data, que es como un array asociativo
+    //DESTRUCTURING
+    //const {temperature, weatherState, humidity, wind} = data;
+    return (
     <div className="weatherDataCont" >
         <WeatherTemperature 
-            temperature={20} 
-            weatherState={WINDY}
+            temperature={temperature} 
+            weatherState={weatherState}
         />
-        <WeatherExtraInfo humidity={80} wind={"10 m/s"}/>
-    </div>
-);
+        <WeatherExtraInfo humidity={humidity} wind={wind}/>
+    </div>);
+};
+
+WeatherData.propTypes = {
+    /*
+    validamos lo que seria el data que le llega a weatherData
+    con el shape los que nos permite es validar un objeto que nosotros
+    le mandamos y por eso es que debe ir con corchetes.
+    */
+    data: PropTypes.shape({
+        temperature: PropTypes.number.isRequired,
+        weatherState: PropTypes.string.isRequired,
+        humidity: PropTypes.number.isRequired,
+        wind: PropTypes.string.isRequired,
+    }),
+};
 
 
 export default WeatherData;
