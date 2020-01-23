@@ -6,7 +6,7 @@ import {
     RAIN,  
     SNOW,
     WINDY,
-} from '../../constants/weathers.js';
+} from './../constants/weathers.js';
 
 const getTemp = (kelvin) => {
     return Number(Convert(kelvin).from("K").to("C").toFixed(2));
