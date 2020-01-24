@@ -1,32 +1,11 @@
 import React, { Component } from 'react';
 import Location from './Location';
+import transformWeather from './../../services/transformWeather';
+import api_weather from './../../constants/api_url';
 import WeatherData from './WeatherData';
 import PropsTypes from 'prop-types';
 import './styles.css';
-import {
-    CLOUD,
-    CLOUDY,   
-    SUN,  
-    RAIN,  
-    SNOW,
-    WINDY,
-} from '../../constants/weathers.js';
 
-const location = "Buenos Aires, ar";
-const api_key = "bc652012ca8d9f42b17205d98def2d6e";
-const url_base_weather = "https://api.openweathermap.org/data/2.5/weather";
-/*
-UNA FORMA DE TRANSFORMAR LOS DATOS DE KELVIN A CELSIUS, 
-PERO VAMOS A USAR UNA LIBRERIA NOSOTROS
-const api_weather = `${url_base_weather}?q=${location}&appid=${api_key}&units=metric`;
-*/
-const api_weather = `${url_base_weather}?q=${location}&appid=${api_key}`;
-const data = {
-    temperature: 5,
-    weatherState: SUN,
-    humidity: 10,
-    wind: '10 m/s',
-};
 
 class WeatherLocation extends Component {
     constructor() {
@@ -34,9 +13,30 @@ class WeatherLocation extends Component {
         //this.state solo se puede usar en el constructor
         this.state = {
             city: 'Buenos Aires',
-            data: data,
+            data: null,
         };
+        console.log("constructor");
     };
+
+    componentDidMount(){
+        console.log("componentDidMount");
+        this.handleUpdateClick();
+    }
+
+
+    componentDidUpdate(prevProps, prevState) {
+        console.log("componentDidUpdate");
+    }
+    
+    /* NO SE USA MAS - DESACONSEJADO
+    componentWillMount(){
+        console.log("UNSAFE componentWillMount");
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        console.log("UNSAFE componentWillUpdate");
+    }
+    */
 
        
     //FUNCION QUE SE EJECUTA CUANDO SE TOCA EL BOTON CON EL EVENTO ONCLICK
@@ -47,13 +47,9 @@ class WeatherLocation extends Component {
         URL
         */
         fetch(api_weather).then((resolve) => {
-            console.log(resolve);
-            
             return resolve.json();
         }).then((data) => {
-            const newWeather = this.getData(data);
-            console.log(newWeather)
-            debugger;
+            const newWeather = transformWeather(data);
             this.setState({
                 data: newWeather,
             });
@@ -62,12 +58,15 @@ class WeatherLocation extends Component {
 
 
     render() {
+        console.log("render");
         const{city, data} = this.state;
         return (
             <div className="weatherLocationCont">
                 <Location city={city} />
-                <WeatherData data = {data}/>
-                <button onClick={this.handleUpdateClick}>Actualizar</button>
+                {data ? 
+                    <WeatherData data = {data}/> :
+                    "Cargando..."
+                }
             </div>
         )
     }

@@ -1,11 +1,6 @@
 import Convert from 'convert-units'; 
-import {
-    CLOUD,
-    CLOUDY,   
+import {  
     SUN,  
-    RAIN,  
-    SNOW,
-    WINDY,
 } from './../constants/weathers.js';
 
 const getTemp = (kelvin) => {
