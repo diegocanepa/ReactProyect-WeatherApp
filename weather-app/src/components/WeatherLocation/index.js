@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Location from './Location';
 import transformWeather from './../../services/transformWeather';
-import api_weather from './../../constants/api_url';
+import getUrlWeatherByCity from './../../services/getUrlWeatherByCity';
 import WeatherData from './WeatherData';
-import PropsTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import './styles.css';
 
 
 class WeatherLocation extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         //this.state solo se puede usar en el constructor
+        const{ city } = props;
         this.state = {
-            city: 'Buenos Aires',
+            city,
             data: null,
         };
         console.log("constructor");
@@ -41,6 +43,8 @@ class WeatherLocation extends Component {
        
     //FUNCION QUE SE EJECUTA CUANDO SE TOCA EL BOTON CON EL EVENTO ONCLICK
     handleUpdateClick = () =>{
+        const api_weather = getUrlWeatherByCity(this.state.city);
+
         /*
         lo que hace el fetch es que te permite el retorno 
         de los datos de la appi. SI o SI se le tiene que mandar el
@@ -65,12 +69,16 @@ class WeatherLocation extends Component {
                 <Location city={city} />
                 {data ? 
                     <WeatherData data = {data}/> :
-                    "Cargando..."
+                    <CircularProgress size={50}/>
                 }
             </div>
         )
     }
 };
 
+
+WeatherLocation.propTypes = {
+    city: PropTypes.string.isRequired,
+}
 
 export default WeatherLocation;

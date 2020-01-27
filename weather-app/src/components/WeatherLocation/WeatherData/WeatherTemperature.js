@@ -2,23 +2,23 @@ import React from 'react';
 import WeatherIcons from 'react-weathericons';
 import PropTypes from 'prop-types';
 import {
+    SUN,
     CLOUD,
-    CLOUDY,   
-    SUN,  
-    RAIN,  
+    RAIN,
     SNOW,
-    WINDY,
+    THUNDER,
+    DRIZZLE,
 } from '../../../constants/weathers.js'
 import './styles.css';
 
 //se crea un diccionario, no es una funcion. es tipo un array asosiativo.
 const icons = {
     [CLOUD]: "cloud",
-    [CLOUDY]: "cloudy",
     [SUN]: "day-sunny",
     [RAIN]: "rain",
     [SNOW]: "snow",
-    [WINDY]: "windy",
+    [THUNDER]: "day-thunderstore",
+    [DRIZZLE]: "day-showers",
 };
 const getWeatherIcon = (weatherState) =>{
     const icon = icons[weatherState];
