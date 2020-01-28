@@ -1,20 +1,30 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import LocationList from './components/WeatherLocation/LocationList';
 
 const cities = [
   'Buenos Aires,ar',
-  'Bacerlona, es',
+  'Cordoba,ar',
+  'Bogota,col',
+  'Madrid,es',
   'Washington,us',
-  'Madrid, es',
 ];
 
-function App() {
+class App extends Component {
+  handleSelectedLocation = (city) => {
+    console.log(`handleSelectedLocation ${city}`);
+  };
+
+  render() {
   return (
     <div className="App">
-      <LocationList cities= {cities}/>
+      <LocationList 
+          cities= {cities} 
+          onSelectedLocation = {this.handleSelectedLocation}
+      />
     </div>
-  );
+    );
+  }
 }
 
 export default App;
