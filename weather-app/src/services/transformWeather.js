@@ -9,7 +9,7 @@ import {
 } from './../constants/weathers.js';
 
 const getTemp = (kelvin) => {
-    return Number(Convert(kelvin).from("K").to("C").toFixed(2));
+    return Number(Convert(kelvin).from("K").to("C").toFixed(0));
 }
 
 const getWeatherState = weather =>{
