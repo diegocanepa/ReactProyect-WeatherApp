@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import './styles.css';
-//import ForecastItem from './ForecastItem';
+import ForecastItem from './ForecastItem';
 import transformForecast from './../services/transformForecast';
 
 /*
@@ -30,8 +30,13 @@ class ForecastExtended extends Component {
         this.state= { forecastdata: null }
     }
 
+    /*
+    SOLAMENTE RENDERIZADA UNA VEZ YA QUE EL COMPONENTDIDMOUNT 
+    SUCEDE UNA VEZ EN EL CICLO DE VIDA DE UN COMPONENTE
+    */
     componentDidMount() {
-        //se puede usar fetch o axios
+        /*
+        se puede usar fetch o axios
         const url_forecast = `${url}?q= ${this.props.city}&appid=${api_key}`;
         fetch(url_forecast).then(
             data => (data.json())
@@ -39,14 +44,51 @@ class ForecastExtended extends Component {
             weather_data => {
                 console.log(weather_data);
                 const forecastData = transformForecast(weather_data);
+                console.log(forecastData);
                 this.setState({forecastData});
             }
-        ); 
+        );
+        */       
+        this.updateCity(this.props.city);
     }
 
-    renderForecastItemsDays(){
-        return <h1>render Items</h1>;
-        //return (days.map( day => (<ForecastItem weekDay = {day} hour={10} data={data}></ForecastItem>)))
+
+    /*
+    SE UTILIZA PARA REALIZAR ACTUALIZACIONES EN EL COMPONENTE 
+    CAUNDO CAMBIA UNA PROPIEDAD
+    */ 
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.city !== this.props.city){
+            this.setState({forecastData: null})
+            this.updateCity(nextProps.city);
+        }
+    }
+    
+    updateCity = city => {
+        const url_forecast = `${url}?q= ${city}&appid=${api_key}`;
+        
+        fetch(url_forecast).then(
+            data => (data.json())
+        ).then(
+            weather_data => {
+                console.log(weather_data);
+                const forecastData = transformForecast(weather_data);
+                console.log(forecastData);
+                this.setState({forecastData});
+            }
+        );
+    }
+
+
+    renderForecastItemsDays(forecastdata){
+        return forecastdata.map( forecast => 
+                (<ForecastItem 
+                    key = {`${forecast.weekDay}${forecast.hour}`}
+                    weekDay = {forecast.weekDay} 
+                    hour={forecast.hour} 
+                    data={forecast.data}>  
+                </ForecastItem>)
+            )
     }
 
     renderProgress = () => {
@@ -60,7 +102,7 @@ class ForecastExtended extends Component {
             <div>
                 <h2 className='forecast-title'>Pronostico Extendido para {city}</h2>
                 {forecastData ?
-                    this.renderForecastItemsDays() :
+                    this.renderForecastItemsDays(forecastData) :
                     this.renderProgress()
                 }
             </div>);
