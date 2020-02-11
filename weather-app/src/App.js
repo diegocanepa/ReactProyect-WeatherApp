@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
 import {Grid, Col, Row} from 'react-flexbox-grid';
 import LocationListContainer from './containers/LocationListContainer';
-import ForecastExtended from './components/ForecastExtended';
+import ForecastExtendedContainer from './containers/ForecastExtendedContainer';
 
 import './App.css';
 
@@ -20,14 +20,14 @@ const cities = [
 
 
 class App extends Component {
-  constructor() {
+  /*constructor() {
     super()
     //la sentencia set.state se usa solo en el constructor
     this.state = {city: null}
-  }
+  }*/
   
   render() {
-    const {city} = this.state;
+    //const {city} = this.state;
     return (
       <Grid>
         <Row>
@@ -46,11 +46,7 @@ class App extends Component {
           <Col xs={12} md={6}>
             <Paper elevation={4}>
               <div className="details">
-                {
-                !city ?
-                  null :
-                  <ForecastExtended city={city}></ForecastExtended>
-                }
+                  <ForecastExtendedContainer></ForecastExtendedContainer>
               </div>
             </Paper> 
           </Col>
