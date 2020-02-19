@@ -1,14 +1,13 @@
-import React, { Component } from 'react';
+import React /*{ Component }*/ from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Location from './Location';
-import transformWeather from './../../services/transformWeather';
-import getUrlWeatherByCity from './../../services/getUrlWeatherByCity';
+//import transformWeather from './../../services/transformWeather';
+//import getUrlWeatherByCity from './../../services/getUrlWeatherByCity';
 import WeatherData from './WeatherData';
 import PropTypes from 'prop-types';
 import './styles.css';
 
-
-class WeatherLocation extends Component {
+/*
     constructor(props) {
         super(props);
         //this.state solo se puede usar en el constructor
@@ -19,6 +18,7 @@ class WeatherLocation extends Component {
         };
         console.log("constructor");
     };
+    
 
     componentDidMount(){
         console.log("componentDidMount");
@@ -30,7 +30,7 @@ class WeatherLocation extends Component {
         console.log("componentDidUpdate");
     }
     
-    /* NO SE USA MAS - DESACONSEJADO
+    //NO SE USA MAS - DESACONSEJADO
     componentWillMount(){
         console.log("UNSAFE componentWillMount");
     }
@@ -38,18 +38,18 @@ class WeatherLocation extends Component {
     componentWillUpdate(nextProps, nextState) {
         console.log("UNSAFE componentWillUpdate");
     }
-    */
+    
 
        
     //FUNCION QUE SE EJECUTA CUANDO SE TOCA EL BOTON CON EL EVENTO ONCLICK
     handleUpdateClick = () =>{
         const api_weather = getUrlWeatherByCity(this.state.city);
 
-        /*
-        lo que hace el fetch es que te permite el retorno 
-        de los datos de la appi. SI o SI se le tiene que mandar el
-        URL
-        */
+        
+        //lo que hace el fetch es que te permite el retorno 
+        //de los datos de la appi. SI o SI se le tiene que mandar el
+        //URL
+        
         fetch(api_weather).then((resolve) => {
             return resolve.json();
         }).then((data) => {
@@ -59,27 +59,29 @@ class WeatherLocation extends Component {
             });
         });
     };
+*/
 
-
-    render() {
-        const {onWeatherLocationClick} = this.props;
-        const{city, data} = this.state;
-        return (
-            <div className="weatherLocationCont" onClick = {onWeatherLocationClick}>
-                <Location city={city} />
-                {data ? 
-                    <WeatherData data = {data}/> :
-                    <CircularProgress size={50}/>
-                }
-            </div>
-        )
-    }
-};
+const WeatherLocation = ({onWeatherLocationClick, city, data}) => (
+    <div className="weatherLocationCont" onClick = {onWeatherLocationClick}>
+        <Location city={city} />
+        {data ? 
+            <WeatherData data = {data}/> :
+            <CircularProgress size={50}/>
+        }
+    </div>
+);
 
 
 WeatherLocation.propTypes = {
     city: PropTypes.string.isRequired,
     onWeatherLocationClick: PropTypes.func,
+    data: PropTypes.shape({
+        temperature: PropTypes.number.isRequired,
+        weatherState: PropTypes.string.isRequired,
+        humidity: PropTypes.number.isRequired,
+        wind: PropTypes.string.isRequired,
+    }),
+
 }
 
 export default WeatherLocation;
